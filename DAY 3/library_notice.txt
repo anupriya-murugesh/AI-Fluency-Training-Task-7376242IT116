@@ -1,0 +1,7 @@
+COLLEGE LIBRARY RULES
+
+Late Return Fine
+
+1 to 5 days  : Rs. 2 per day
+6 to 10 days : Rs. 5 per day
+Above 10 days : Rs. 10 per day
