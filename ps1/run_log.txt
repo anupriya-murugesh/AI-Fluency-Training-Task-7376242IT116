@@ -1,0 +1,72 @@
+=== Mermaid Diagram ===
+---
+config:
+  flowchart:
+    curve: linear
+---
+graph TD;
+	__start__([<p>__start__</p>]):::first
+	agent(agent)
+	tools(tools)
+	__end__([<p>__end__</p>]):::last
+	__start__ --> agent;
+	agent -.-> __end__;
+	agent -.-> tools;
+	tools --> agent;
+	classDef default fill:#f2f0ff,line-height:1.2
+	classDef first fill-opacity:0
+	classDef last fill:#bfb6fc
+
+
+=== Direct Tool Tests (Part B) ===
+check_exam_eligibility(82) -> ELIGIBLE: With 82.0% attendance, the student may write the end-semester examination.
+check_exam_eligibility(70) -> CONDONATION: With 70.0% attendance, the student may write the exam with condonation by paying Rs. 500 per course along with a medical or official certificate.
+check_exam_eligibility(50) -> NOT ELIGIBLE: With 50.0% attendance (below 65%), the student is not permitted to write the examination and must redo the course.
+check_exam_eligibility(120) -> Error: Attendance percentage 120.0 is invalid. It must be between 0 and 100.
+
+=== Five Test Questions on thread 'task-run' (Part D) ===
+
+[task-run] USER: What CGPA do I need to be eligible for placements?
+   agent  -> call search_handbook({'query': 'CGPA eligibility for placements'})
+   tools  -> search_handbook returned '[placement_policy.md] # Placement Policy (Greenfield Co'...
+   agent  -> ANSWER: You need a CGPA of **6.5 or higher** (and no standing arrears) to be eligible for campus placements.  
+*Source: placement_policy.md*
+
+[task-run] USER: My attendance is 70%. Can I write the exam?
+   agent  -> call check_exam_eligibility({'attendance_percent': 70})
+   tools  -> check_exam_eligibility returned 'CONDONATION: With 70.0% attendance, the student may wri'...
+   agent  -> ANSWER: Yes. With 70 % attendance you can write the exam, but you’ll need to obtain condonation—pay the Rs 500 per‑course fee and provide a medical or official certificate.
+
+[task-run] USER: What is the total of the CS101 fee, the AI202 fee and the maximum late fee?
+   agent  -> call search_handbook({'query': 'late fee maximum'})
+   tools  -> search_handbook returned '[fee_policy.md] ## Late fee\nA late fee of Rs. 100 per d'...
+   agent  -> call get_course_fee({'course_code': 'CS101'})
+   tools  -> get_course_fee returned 'CS101 fee is Rs. 12000'...
+   agent  -> call get_course_fee({'course_code': 'AI202'})
+   tools  -> get_course_fee returned 'AI202 fee is Rs. 18000'...
+   agent  -> call calculator({'expression': '12000 + 18000 + 2000'})
+   tools  -> calculator returned '32000'...
+   agent  -> ANSWER: The total is **Rs 32,000** (CS101 = 12,000 + AI202 = 18,000 + maximum late fee = 2,000).
+
+[task-run] USER: And if I pay only 5 days late instead?
+   agent  -> call calculator({'expression': '12000 + 18000 + 500'})
+   tools  -> calculator returned '30500'...
+   agent  -> ANSWER: If you’re only 5 days late, the late fee would be 5 × Rs 100 = Rs 500.  
+So the total becomes **Rs 30,500** (12,000 + 18,000 + 500).
+
+[task-run] USER: What is the capital of France?
+   agent  -> call search_handbook({'query': 'capital of France'})
+   tools  -> search_handbook returned 'NO_MATCH: this is not covered in the college handbook'...
+   agent  -> ANSWER: I’m sorry, but I don’t have that information.
+
+=== Stretch Goal: Thread 'task-run-2' asking only Question 4 ===
+
+[task-run-2] USER: And if I pay only 5 days late instead?
+   agent  -> call search_handbook({'query': 'late payment 5 days penalty'})
+   tools  -> search_handbook returned '[fee_policy.md] ## Late fee\nA late fee of Rs. 100 per d'...
+   agent  -> ANSWER: If you pay 5 days after the due date, the late‑fee will be 5 × Rs 100 = Rs 500 (subject to the overall Rs 2,000 maximum).  
+*Source: fee_policy.md*
+
+=== State Verification ===
+Thread task-run has 26 messages saved in memory
+Thread task-run-2 has 4 messages saved in memory
