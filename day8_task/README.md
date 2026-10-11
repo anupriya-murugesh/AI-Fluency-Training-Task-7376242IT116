@@ -77,7 +77,7 @@ Prevented hallucination and out-of-domain answers by guarding `search_handbook`:
    - **Placements question (in-domain):** `0.1768` (`placement_policy.md`)
    - **Capital of France (out-of-domain):** `0.5731` (`hostel_rules.md`)
 3. **Selected Threshold:** `MAX_DISTANCE = 0.40`.
-4. If no chunk satisfies $\text{score} \le \text{MAX\_DISTANCE}$, the tool returns:
+4. If no chunk satisfies MAX\_DISTANCE, the tool returns:
    ```text
    NO_MATCH: this is not covered in the college handbook
    ```
@@ -106,7 +106,7 @@ All 5 benchmark questions were executed in a single thread (`thread_id="task-run
    - In a fresh thread `task-run-2`, asking the exact same question in isolation triggers a search for the late fee policy only and calculates **Rs. 500** (5 days × Rs. 100), because thread `task-run-2` has no memory of the courses mentioned in `task-run`.
    - Empirically verifies thread isolation in LangGraph (`task-run` has 26 messages saved; `task-run-2` has 4 messages saved).
 2. **`library_fine` Tool:**
-   - Implemented `@tool def library_fine(days_late: int, books: int = 1)` calculating $\text{fine} = \text{days\_late} \times \text{books} \times 2$ according to `library.md`.
+   - Implemented `@tool def library_fine(days_late: int, books: int = 1)` calculating fine according to `library.md`.
 
 ---
 
